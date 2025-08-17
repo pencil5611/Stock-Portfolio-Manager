@@ -37,6 +37,7 @@ A comprehensive Streamlit web application for tracking your stock portfolio, mon
 ### Prerequisites
 - Python 3.8 or higher
 - A Groq API key (free at [console.groq.com](https://console.groq.com))
+- A FinnHub API key (free at [Visit Finnhub Dashboard](https://finnhub.io/dashboard))
 
 ### Installation
 
@@ -55,6 +56,7 @@ pip install -r requirements.txt
 Create a `.env` file in the project root:
 ```env
 API_KEY=your_groq_api_key_here
+FIN_API_KEY=your_fin_api_key_here
 ```
 
 4. **Run the application**
@@ -208,3 +210,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
