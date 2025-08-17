@@ -15,20 +15,17 @@ def show():
 
     try:
         if not df.empty:
-            # Date range filter
             min_date = df["Date"].min()
             max_date = df["Date"].max()
             start_date, end_date = st.date_input("Filter by date range", [min_date, max_date])
 
-            # Ticker filter
+
             tickers = ["All"] + sorted(df["Ticker"].dropna().unique().tolist())
             selected_ticker = st.selectbox("Filter by ticker", tickers)
 
-            # Transaction type filter
             txn_types = ["All"] + sorted(df["Type"].dropna().unique().tolist())
             selected_type = st.selectbox("Filter by transaction type", txn_types)
 
-            # Apply filters (but keep copy for selection)
             filtered_df = df[
                 (df["Date"] >= pd.to_datetime(start_date)) &
                 (df["Date"] <= pd.to_datetime(end_date))
@@ -40,7 +37,6 @@ def show():
             if selected_type != "All":
                 filtered_df = filtered_df[filtered_df["Type"] == selected_type]
 
-            # Always allow selection, even if table would be empty
             if not filtered_df.empty:
                 selected_rows = st.multiselect(
                     "Select transactions to delete",
@@ -53,7 +49,6 @@ def show():
                     st.success("Selected transactions deleted.")
                     st.rerun()
 
-            # Show table (even if empty after selection)
             st.dataframe(filtered_df.sort_values(by="Date", ascending=False), use_container_width=True, hide_index=True)
         else:
             st.warning("No transactions detected.")
