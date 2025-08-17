@@ -18,20 +18,20 @@ groq_client = Groq(api_key=groq_key)
 def show():
     st.title('Stock Research')
 
-    # Step 1: Ticker input form
+   
     with st.form('ticker_form', clear_on_submit=False):
         ticker = st.text_input('Ticker Symbol').upper()
         submitted = st.form_submit_button('Fetch Data')
 
-    # Initialize session state on first run or if missing
+    
     if 'metrics_df' not in st.session_state:
         st.session_state.metrics_df = pd.DataFrame()
     if 'ticker_prices_df' not in st.session_state:
         st.session_state.ticker_prices_df = pd.DataFrame()
 
-    # Step 2: On submit, fetch data, update session state
+    
     if submitted and ticker:
-        # Store ticker first to persist across reruns
+        
         st.session_state['ticker'] = ticker
 
         yf_ticker = yf.Ticker(ticker)
@@ -40,10 +40,9 @@ def show():
             st.error(f'Could not fetch price data for "{ticker}"')
             st.stop()
         else:
-            # Fetch price data for selected range later, but here keep last 7d history for example
             st.session_state.ticker_prices_df = hist[['Close']].copy()
 
-            # Fetch info and format metrics
+            
             info = yf_ticker.info
             metrics = {
                 'Current Price': info.get('regularMarketPrice'),
@@ -74,7 +73,7 @@ def show():
             metrics_formatted = {k: format_value(v) for k, v in metrics.items()}
             st.session_state.metrics_df = pd.DataFrame([metrics_formatted])
 
-    # Step 3: Only show the rest of the UI if ticker is stored
+    
     if 'ticker' in st.session_state:
         time_options = {
             "1 Month": 30,
@@ -89,33 +88,33 @@ def show():
         days = time_options[time_choice]
         start_date = datetime.today() - timedelta(days=days)
 
-        # Fetch price data for the selected range (can optimize caching if you want)
+        
         ticker_prices = yf.download(st.session_state['ticker'], start=start_date, auto_adjust=True)['Close'].fillna(
             method='ffill')
 
-        # Save the price data to session state so it persists after rerun
+        
         st.session_state.ticker_prices_df = pd.DataFrame(
             {'Date': ticker_prices.index.ravel(), 'Close': ticker_prices.values.ravel()})
 
-        # Plot the price data from session state
+        
         if not st.session_state.ticker_prices_df.empty:
             df = st.session_state.ticker_prices_df.set_index('Date')
             st.line_chart(df['Close'])
 
-        # Show the metrics table from session state (persisted from last fetch)
+        
         if not st.session_state.metrics_df.empty:
             st.subheader('Important Metrics')
             metrics_dict = st.session_state.metrics_df.iloc[0].to_dict()
 
             formatted_lines = []
             for key, value in metrics_dict.items():
-                # Medium green color - between bright and dark
+                
                 formatted_lines.append(f"**{key}** {'.' * 20} <span style='color: #00cc44;'>{value}</span>")
 
-            # Join with line breaks and display as markdown
+            
             st.markdown('<br>'.join(formatted_lines), unsafe_allow_html=True)
 
-        # Initialize session state for buttons
+        
         if 'show_news' not in st.session_state:
             st.session_state.show_news = False
         if 'show_ai' not in st.session_state:
