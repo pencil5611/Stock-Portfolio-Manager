@@ -18,10 +18,9 @@ def render_portfolio_manager():
     client = Groq(api_key=API_KEY)
 
     def log_transaction(date, txn_type, ticker, shares, price_per_share, total_value, notes=""):
-        # Append to CSV
         new_row = {
             "Date": date,
-            "Type": txn_type,  # "Buy" / "Sell"
+            "Type": txn_type,  
             "Ticker": ticker,
             "Shares": shares,
             "Price Per Share": price_per_share,
@@ -32,7 +31,7 @@ def render_portfolio_manager():
         df.to_csv(TRANSACTIONS_FILE, mode="a", header=not os.path.exists(TRANSACTIONS_FILE), index=False)
 
 
-    # Helper functions for cash
+    
     def load_cash():
         if os.path.exists(CASH_FILE):
             df_cash = pd.read_csv(CASH_FILE)
@@ -44,7 +43,7 @@ def render_portfolio_manager():
         df_cash = pd.DataFrame({'Cash': [cash_amount]})
         df_cash.to_csv(CASH_FILE, index=False)
 
-    # Helper functions for last refresh timestamp
+   
     def load_last_refresh():
         if os.path.exists(LAST_REFRESH_FILE):
             with open(LAST_REFRESH_FILE, 'r') as f:
@@ -223,7 +222,7 @@ def render_portfolio_manager():
 
 
 
-    # ---- Portfolio vs S&P 500 chart ----
+    
     st.subheader("Portfolio Performance vs S&P 500")
 
     # Time range selector
@@ -238,37 +237,35 @@ def render_portfolio_manager():
     time_choice = st.selectbox("Select Time Range", list(time_options.keys()), index=1)
     days = time_options[time_choice]
 
-    # Build portfolio history
+    
     if not df.empty:
         tickers = df['Ticker'].tolist()
         shares = df.set_index('Ticker')['Shares'].to_dict()
         start_date = datetime.today() - timedelta(days=days)
 
-        # Fetch historical data
         portfolio_prices = yf.download(tickers, start=start_date, auto_adjust=True)['Close']
-        if isinstance(portfolio_prices, pd.Series):  # Only one ticker
+        if isinstance(portfolio_prices, pd.Series):  
             portfolio_prices = portfolio_prices.to_frame()
 
-        # Filter out tickers with no historical data (all NaN)
+        
         valid_tickers = [t for t in tickers if t in portfolio_prices.columns and not portfolio_prices[t].isnull().all()]
         portfolio_prices = portfolio_prices[valid_tickers]
         shares = {t: shares[t] for t in valid_tickers}
 
-        # Forward fill missing data to avoid NaNs and zeros disrupting the graph
+        
         portfolio_prices = portfolio_prices.fillna(method='ffill')
 
-        # Calculate portfolio value each day
+        
         portfolio_value = portfolio_prices.multiply([shares[t] for t in portfolio_prices.columns], axis=1).sum(axis=1)
         portfolio_value = portfolio_value.dropna()
         portfolio_value = portfolio_value[portfolio_value > 0]
 
-        # Fetch S&P 500 and fill missing data
+        
         sp500 = yf.download("^GSPC", start=start_date, auto_adjust=True)['Close'].fillna(method='ffill')
 
         if portfolio_value.empty or pd.isna(portfolio_value.iloc[0]) or portfolio_value.iloc[0] == 0:
             st.warning("Portfolio price data incomplete or zero on first day; cannot display performance graph.")
         else:
-            # Normalize to 100 for comparison
             portfolio_norm = portfolio_value / portfolio_value.iloc[0] * 100
             sp500_norm = sp500 / sp500.iloc[0] * 100
 
@@ -284,11 +281,11 @@ def render_portfolio_manager():
     else:
         st.info("Add some stocks to see performance comparison.")
 
-    # ---- Sector pie chart ----
+    
     if not df.empty:
         ticker_value_dict = {row['Ticker']: row['Total Value ($)'] for _, row in df.iterrows()}
 
-        # Call Groq only if categories aren't already stored
+        
         for ticker in ticker_value_dict:
             if ticker not in st.session_state.sector_data:
                 prompt = (
@@ -314,13 +311,13 @@ def render_portfolio_manager():
                     st.warning(f"Groq error for {ticker}: {e}")
 
 
-        # Group values by sector
+        
         sector_totals = {}
         for ticker, value in ticker_value_dict.items():
             sector = st.session_state.sector_data.get(ticker, "Other")
             sector_totals[sector] = sector_totals.get(sector, 0) + value
 
-        # Remove any categories with zero value
+        
         filtered_sector_totals = {k: v for k, v in sector_totals.items() if v > 0}
 
         if not filtered_sector_totals:
@@ -333,7 +330,7 @@ def render_portfolio_manager():
             fig = px.pie(sector_df, values="Value", names="Sector", title="Sector Allocation")
             st.plotly_chart(fig)
 
-    # Refresh button and last refresh time display
+    
     col1, col2 = st.columns([1, 3])
     with col1:
         if st.button("Refresh Price Data"):
