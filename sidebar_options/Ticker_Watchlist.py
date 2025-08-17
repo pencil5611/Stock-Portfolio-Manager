@@ -33,7 +33,7 @@ def refresh_watchlist_data(watchlist_df):
             three_months_ago = today - timedelta(days=90)
             six_months_ago = today - timedelta(days=182)
             ticker_yf = yf.Ticker(ticker)
-            # Request extra days to account for weekends/holidays
+            
             buffer_days = 30
             extended_start = six_months_ago - timedelta(days=buffer_days)
             hist = ticker_yf.history(start=extended_start.strftime('%Y-%m-%d'), end=today.strftime('%Y-%m-%d'))
@@ -44,20 +44,20 @@ def refresh_watchlist_data(watchlist_df):
 
                 date_str = date.strftime('%Y-%m-%d')
 
-                # If exact date exists, return it
+              
                 if date_str in hist.index:
                     return hist.loc[date_str]['Close']
 
-                # Convert to comparable format (remove timezone)
+             
                 hist_dates = pd.to_datetime([d.split()[0] for d in hist.index.astype(str)])
                 target_date = pd.to_datetime(date_str)
 
-                # If target date is before available data, use first available date
+              
                 if target_date < hist_dates.min():
                     first_date = hist_dates.min().strftime('%Y-%m-%d')
                     return hist.loc[first_date]['Close']
 
-                # Otherwise find the closest date on or before target
+          
                 valid_dates = hist_dates[hist_dates <= target_date]
                 if len(valid_dates) > 0:
                     closest_date = valid_dates.max().strftime('%Y-%m-%d')
@@ -153,7 +153,7 @@ def show():
 
 
 
-                    # Calculate changes safely
+                    # Calculate changes :D
                     day_change = (share_price - last_close) if (
                                 share_price is not None and last_close is not None) else None
                     month_change = (share_price - price_1m) if (
@@ -163,7 +163,7 @@ def show():
                     sixM_change = (share_price - price_6m) if (
                                 share_price is not None and price_6m is not None) else None
 
-                    # Use original zero-division handling (which also handles None)
+                    # more calculations zzzz
                     day_pct = (day_change / last_close) * 100 if last_close else None
                     month_pct = (month_change / price_1m) * 100 if price_1m else None
                     threeM_pct = (threeM_change / price_3m) * 100 if price_3m else None
