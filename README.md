@@ -171,10 +171,11 @@ The AI automatically categorizes stocks into:
 
 ### Common Issues
 
-**"6 months data is None"**
-- This happens on weekends/holidays when looking back exactly 182 days
-- The refresh button will fix this on the next trading day
+**"X time ago data is None"**
+- This happens on weekends/holidays when 
+- The refresh button will fix this on the next trading day (or sometimes within the hour)
 - Data automatically resolves as calendar moves forward
+- Note: This happens solely in the watchlist
 
 **"Could not fetch price data"**
 - Check your internet connection
@@ -210,6 +211,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
