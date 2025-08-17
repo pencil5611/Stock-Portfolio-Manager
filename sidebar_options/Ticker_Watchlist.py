@@ -213,7 +213,7 @@ def show():
                     st.error(f'Error removing ticker: {e}')
 
     display_df = st.session_state.watchlist_df.copy()
-    display_df = display_df.fillna('N/A')  # or 'Pending' or '--'
+    display_df = display_df.fillna('N/A') 
     st.dataframe(display_df, hide_index=True)
 
 
