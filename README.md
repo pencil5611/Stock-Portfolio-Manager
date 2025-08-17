@@ -206,11 +206,13 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 - [Yahoo Finance](https://finance.yahoo.com) for providing free market data
 - [Groq](https://groq.com) for fast AI inference
 - [Streamlit](https://streamlit.io) for the amazing web app framework
+- [FinnHub](https://finnhub.io) for news API
 - The open-source community for the excellent Python libraries
 
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
