@@ -99,8 +99,8 @@ The app will open in your browser at `http://localhost:8501`
 ```
 ├── app.py                 # Main Streamlit application
 ├── features/              # Core functionality modules
-│   ├── portfolio.py       # Portfolio management
-│   └── watchlist.py       # Watchlist functionality
+│   ├── portfolio_manager.py       # Portfolio management
+│   └── risk_analysis.py       # Watchlist functionality
 ├── sidebar_options/       # Navigation components
 ├── requirements.txt       # Python dependencies
 ├── .env                   # Environment variables (create this)
@@ -212,6 +212,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
