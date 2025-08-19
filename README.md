@@ -61,7 +61,7 @@ FIN_API_KEY=your_fin_api_key_here
 
 4. **Run the application**
 ```bash
-streamlit run app.py
+streamlit run Stock-Portfolio-Manager/app.py
 ```
 
 The app will open in your browser at `http://localhost:8501`
@@ -212,6 +212,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
