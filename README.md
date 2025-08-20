@@ -97,11 +97,16 @@ The app will open in your browser at `http://localhost:8501`
 ## 📁 Project Structure
 
 ```
-├── app.py                 # Main Streamlit application
-├── features/              # Core functionality modules
-│   ├── portfolio_manager.py       # Portfolio management
-│   └── risk_analysis.py       # Risk functionality
-├── sidebar_options/       # Navigation components
+├── app.py                           # Main entry point
+├── features/
+│   ├── portfolio_manager.py         # Core business logic
+│   └── risk_analysis.py            # Risk calculations
+├── sidebar_options/                 # Page components (UI layers)
+│   ├── Portfolio_Manager.py         # 📈 Portfolio page
+│   ├── Risk_Analysis.py            # 📊 Risk analysis page  
+│   ├── Stock_Research.py           # 🔍 Research page
+│   ├── Ticker_Watchlist.py         # 👁️ Watchlist page
+│   └── Transaction_History.py      # 📜 Transaction history page
 ├── requirements.txt       # Python dependencies
 ├── .env                   # Environment variables (create this)
 ├── .gitignore            # Git ignore rules
@@ -212,6 +217,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
