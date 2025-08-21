@@ -193,6 +193,10 @@ The AI automatically categorizes stocks into:
 - Check you haven't exceeded free tier limits
 - Failed categorizations will retry automatically
 
+**Error with imports "from features.portfolio_manager import render_portfolio_manager" appears to raise**
+- This does not actually raise an error; the program should still function correctly
+- If you wish to stop your IDE from yelling at you about it, mark the Stock-Portfolio-Manager directory as **resource root**
+
 ## 🤝 Contributing
 
 1. Fork the repository
@@ -217,6 +221,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ---
 
 **⭐ If you find this project helpful, please give it a star!**
+
 
 
 
